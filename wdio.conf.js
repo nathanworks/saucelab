@@ -49,9 +49,19 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome'
-    }],
+    // capabilities: [{
+    //     browserName: 'chrome'
+    // }],
+
+    capabilities: [
+    {
+      maxInstances: 1,
+      browserName: "chrome",
+      "goog:chromeOptions": {
+        args: ["--headless", "--disable-gpu", "--window-size=1920,1080"],
+      },
+    },
+  ],
 
     //
     // ===================
@@ -128,7 +138,7 @@ exports.config = {
     // If you are using Cucumber you need to specify the location of your step definitions.
     cucumberOpts: {
         // <string[]> (file/dir) require files before executing features
-        require: ['./features/step-definitions/steps.js'],
+        require: ['./features/step-definitions/*.js'],
         // <boolean> show full backtrace for errors
         backtrace: false,
         // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)
