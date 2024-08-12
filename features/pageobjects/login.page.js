@@ -20,19 +20,22 @@ class LoginPage extends Page {
         return $("#login-button");
     }
 
-    /**
-     * a method to encapsule automation code to interact with the page
-     * e.g. to login using username and password
-     */
+    get errorMsg(){
+        return $(
+          "//h3[contains(text(), 'Epic sadface: Username and password do not match any user in this service')]"
+        )
+    }
+
     async login (username, password) {
         await this.inputUsername.setValue(username);
         await this.inputPassword.setValue(password);
+    }
+
+    async clickLogin()
+    {
         await this.btnSubmit.click();
     }
 
-    /**
-     * overwrite specific options to adapt it to page object
-     */
     open () {
         return super.open('');
     }

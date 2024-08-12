@@ -4,30 +4,34 @@ const { expect, $ } = require("@wdio/globals");
 const LoginPage = require("../pageobjects/login.page");
 const ProductPage = require("../pageobjects/product.page");
 
-
 Given(/^the user is logged (.*) and (.*) in and on the products page$/, async(username,password) => {
-    await LoginPage.open();
+    await ProductPage.open();
     await LoginPage.login(username, password);
+    await LoginPage.clickLogin()
      await browser.waitUntil(
-       async () => await ProductPage.appLogo.isDisplayed(),
+       async () => await ProductPage.productTitle.isDisplayed(),
        {
          timeout: 5000,
        }
      );
 });
 
-When(/^the user clicks "Add to Cart"$/, async () => {
-  await ProductPage.addToCartClick();
+When(/^the user clicks "Add to Cart" on (.*)$/, async (product) => {
+  const product_xpath = await ProductPage.convertProductToXpath(product)
+  await ProductPage.addToCartClick(product_xpath);
 });
 
-Then(/^the button label should change to "Remove"$/, async () => {
+Then(/^the button label should change to "Remove" on (.*)$/, async (product) => {
+  const product_xpath = await ProductPage.convertProductToXpath(product);
   await browser.waitUntil(
-    async () => await ProductPage.removeButton.isDisplayed(),
+    async () => await ProductPage.removeButton(product_xpath).isDisplayed(),
     {
       timeout: 5000,
     }
   );
-  const removeButtonDisplayed = await ProductPage.removeButton.isDisplayed();
+  const removeButtonDisplayed = await ProductPage.removeButton(
+    product_xpath
+  ).isDisplayed();
   expect(removeButtonDisplayed).toBe(true);
 });
 

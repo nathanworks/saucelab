@@ -8,8 +8,8 @@ class ProductPage extends Page {
   /**
    * define selectors using getter methods
    */
-  get appLogo() {
-    return $(".app_logo");
+  get productTitle() {
+    return $("//span[contains(text(),'Products')]");
   }
 
   get productList() {
@@ -17,19 +17,27 @@ class ProductPage extends Page {
   }
 
   get addToCart() {
-    return $("#add-to-cart-sauce-labs-backpack");
+    return (product) => $(`#add-to-cart-${product}`);
   }
 
   get removeButton() {
-    return $("#remove-sauce-labs-backpack");
+    return (product) => $(`#remove-${product}`);
   }
 
   get cartIcon() {
     return $("//span[@class='shopping_cart_badge' and text()='1']");
   }
 
-  async addToCartClick() {
-    await this.addToCart.click();
+  async convertProductToXpath(product){
+    return product
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "");
+  }
+
+  async addToCartClick(product) {
+    const addToCartButton = this.addToCart(product);
+    await addToCartButton.click();
   }
 
   async open() {

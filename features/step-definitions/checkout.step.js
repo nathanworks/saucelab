@@ -6,18 +6,20 @@ const ProductPage = require("../pageobjects/product.page");
 const CheckoutPage = require("../pageobjects/checkout.page");
 
 Given(
-  /^the user is logged (.*) and (.*) in and on the cart page and at least one item in cart$/,
-  async (username, password) => {
-    await LoginPage.open();
+  /^the user is logged (.*) and (.*) in and on the cart page and has (.*) in cart$/,
+  async (username, password, product) => {
+    await CheckoutPage.open();
     await LoginPage.login(username, password);
+    await LoginPage.clickLogin();
     await browser.waitUntil(
-      async () => await ProductPage.appLogo.isDisplayed(),
+      async () => await ProductPage.productTitle.isDisplayed(),
       {
         timeout: 5000,
       }
     );
 
-    await ProductPage.addToCartClick();
+    const product_xpath = await ProductPage.convertProductToXpath(product);
+    await ProductPage.addToCartClick(product_xpath);
     await CheckoutPage.cartBadgeClick();
   }
 );
@@ -36,20 +38,20 @@ Then(/^the user should be redirected to checkout infomation page$/, async() => {
   );
   const yourinformationDisplayed =
     await CheckoutPage.yourinformation.isDisplayed();
-  expect(yourinformationDisplayed).toBe(True);
+  expect(yourinformationDisplayed).toBe(true);
 });
 
 Then(
   /^the user should see field of "first name", "last name", "zip", cancel button$/,
   async() => {
     const firstnameDisplayed = await CheckoutPage.firstNameInput.isDisplayed();
-    expect(firstnameDisplayed).toBe(True);
+    expect(firstnameDisplayed).toBe(true);
 
     const lastnameDisplayed = await CheckoutPage.lastNameInput.isDisplayed();
-    expect(lastnameDisplayed).toBe(True);
+    expect(lastnameDisplayed).toBe(true);
 
     const postalDisplayed = await CheckoutPage.postalCodeInput.isDisplayed();
-    expect(postalDisplayed).toBe(True);
+    expect(postalDisplayed).toBe(true);
   }
 );
 
@@ -70,21 +72,21 @@ Then(/^the user should be redirected to checkout overwiew page$/, async() => {
     }
   );
   const overviewDisplayed = await CheckoutPage.overview.isDisplayed();
-  expect(overviewDisplayed).toBe(True);
+  expect(overviewDisplayed).toBe(true);
 });
 
 Then(
   /^the user should see detail of product , "payment", "shipping" info$/,
   async() => {
     const paymentDisplayed = await CheckoutPage.paymentInfo.isDisplayed();
-    expect(paymentDisplayed).toBe(True);
+    expect(paymentDisplayed).toBe(true);
 
     const shipDisplayed =
       await CheckoutPage.shipInfo.isDisplayed();
-    expect(shipDisplayed).toBe(True);
+    expect(shipDisplayed).toBe(true);
 
     const priceDisplayed = await CheckoutPage.priceInfo.isDisplayed();
-    expect(priceDisplayed).toBe(True);
+    expect(priceDisplayed).toBe(true);
   }
 );
 
@@ -100,7 +102,7 @@ Then(/^the user should be redirected to checkout complete page$/, async() => {
     }
   );
   const completeDisplayed = await CheckoutPage.complete.isDisplayed();
-  expect(completeDisplayed).toBe(True);
+  expect(completeDisplayed).toBe(true);
 });
 
 Then(/^the user should see "Thank you for your order!"$/, async() => {
@@ -111,10 +113,10 @@ Then(/^the user should see "Thank you for your order!"$/, async() => {
      }
    );
    const completeDisplayed = await CheckoutPage.completeh2.isDisplayed();
-   expect(completeDisplayed).toBe(True);
+   expect(completeDisplayed).toBe(true);
 });
 
 Then(/^the user should see "Back Home" button$/, async() => {
     const backDisplayed = await CheckoutPage.backHome.isDisplayed();
-    expect(backDisplayed).toBe(True);
+    expect(backDisplayed).toBe(true);
 });

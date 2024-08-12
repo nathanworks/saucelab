@@ -7,15 +7,15 @@ class CheckoutPage extends Page {
   }
 
   get yourinformation() {
-    return $("//span[@class='title' and text()='Checkout: Your Information']");
+    return $("//span[contains(text(),'Checkout: Your Information')]");
   }
 
   get overview() {
-    return $("//span[@class='title' and text()='Checkout: Overview']");
+    return $("//span[contains(text(),'Checkout: Overview')]");
   }
 
   get complete() {
-    return $("//span[@class='title' and text()='Checkout: Complete!']");
+    return $("//span[contains(text(),'Checkout: Complete!')]");
   }
 
   get firstNameInput() {
@@ -86,6 +86,10 @@ class CheckoutPage extends Page {
 
   async CheckoutClick() {
     await this.checkout.click();
+  }
+
+  open() {
+    return super.open("cart.html");
   }
 }
 

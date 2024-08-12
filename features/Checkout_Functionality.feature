@@ -1,7 +1,7 @@
 Feature: Checkout Functionality
 
   Scenario: User completes a purchase
-    Given the user is logged <username> and <password> in and on the cart page and at least one item in cart
+    Given the user is logged <username> and <password> in and on the cart page and has <product> in cart
     When the user clicks Checkout button
     Then the user should be redirected to checkout infomation page
     And the user should see field of "first name", "last name", "zip", cancel button
@@ -15,5 +15,5 @@ Feature: Checkout Functionality
     And the user should see "Back Home" button
 
     Examples:
-      | username      | password     | first_name | last_name | zip    |
-      | standard_user | secret_sauce | jonathan   | hermawan  | 123123 |
+      | username      | password     | product                  | first_name | last_name | zip    |
+      | standard_user | secret_sauce | Sauce Labs Fleece Jacket | jonathan   | hermawan  | 123123 |
